@@ -16,20 +16,7 @@ All functions operate on Lua arrays. E.g.
     etc...
 
 All functions return an iterator which returns a array on every call. The array is always a
-new copy but it references the elements in the parameters. For example:
-
-    x = {{a=7},{b=4}}
-    for p in C.combn(x, 2) do
-        print(p.a, p.b)
-        -- p.a = 0 , this would end up setting a to 0 in x.
-    end
-
-    Outputs:
-    {{a=7},{b=4}}
-    {{b=4},{a=7}}
-    -- but had we left the line above in we'd get:
-    -- {{a=0},{b=4}}
-    -- {{b=4},{a=0}}
+new copy but the elements are included by reference (i.e. they are not a copy).
 
 ## Including in a project
 
@@ -65,7 +52,7 @@ Example:
 
     for p in C.permute({'x','y','z'}) do ... end
 
-## powerset(tnl) -> iterator
+## powerset(tbl) -> iterator
 
 Produces all of the subsets of the elements in *tbl*. It outputs an iterator which
 returns a new combination for every call, except for the last call which returns a null.
