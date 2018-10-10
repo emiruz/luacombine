@@ -2,7 +2,7 @@ package = "luacombine"
 version = "scm-0"
 
 source = {
-  url = "https://github.com/emiruz/luacombine.git",
+  url = "git://github.com/emiruz/luacombine.git",
 }
 
 description = {
