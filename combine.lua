@@ -1,5 +1,27 @@
 local combine = {}
 
+local function flat(o)
+   local t = type(o)
+   if t == "table" and o.__call ~= nil then
+      local a = {}
+      for x in o do
+	 table.insert(a,x)
+      end
+      return a
+   end
+   if t == "function" then
+      local a = {}
+      for x in o do
+	 table.insert(a,x)
+      end
+      return a
+   end
+   if t == "table" then
+      return o
+   end
+   error("Expected a functional iterator or a table.")
+end
+
 local function icombn(tbl,i,n)
    local l = table.getn(tbl)
    if n == 1 then
@@ -73,7 +95,8 @@ local function ipermute(n)
    end
 end
 
-function combine.combn(tbl,n)
+function combine.combn(o,n)
+   local tbl = flat(o)
    if n <= 0 or n > table.getn(tbl) then
       error("Need 0 < n <= tbl length.")
    end
@@ -85,10 +108,14 @@ function combine.combn_many(...)
    if #params == 0 then
       error("Need at least one array.")
    end
+   for i=1,table.getn(params) do
+      params[i] = flat(params[i])
+   end
    return icombn_many(table.getn(params), params)
 end
 
-function combine.powerset(tbl)
+function combine.powerset(o)
+   local tbl = flat(o)
    local l = table.getn(tbl)
    local i = 1
    local v = icombn(tbl,1,i)
@@ -104,7 +131,8 @@ function combine.powerset(tbl)
    end
 end
 
-function combine.permute(tbl)
+function combine.permute(o)
+   local tbl = flat(o)
    local n = table.getn(tbl)
    if n == 0 then return tbl end
    local v = ipermute(n)
