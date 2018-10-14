@@ -4,7 +4,7 @@ Pure, performant combination and permutation library for Lua and LuaJIT.
 
 # Installation
 
-    luarocks install luacombine
+    luarocks install --server=http://luarocks.org/dev luacombine
 
 # Documentation
 
