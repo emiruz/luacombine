@@ -17,10 +17,18 @@ All functions operate on Lua arrays. E.g.
 
 If a function receives an iterator or a table with an overloaded *__call* method, it'll first
 convert it to a standard table array, and then continue on. This is moreso for convenience
-since the lirbary is quite useful alongside things like luafun or luaiter.
+since the library is quite useful alongside things like luafun or luaiter.
 
-All functions return an iterator which returns a array on every call. The array is always a
-new copy but the elements are included by reference (i.e. they are not a copy).
+All functions return an iterator which returns multiple results rather than returning tables.
+Iterators were used because they are more memory efficient and because they are well optimised
+for by LuaJIT. Multiple results are returned instead of tables because creating tables is an
+expensive operation in Lua. Returning multiple results allows the decision to create a table
+to be passed onwards so that it's only done when it's required. Further, making a table from
+multiple results (e.g. local x = {f()}) is more efficient in Lua than making a table by
+incrementally adding to it.
+
+Generally inside of each function, I've tried to use as few resources as possible and
+to minimise object creation.
 
 ## Including in a project
 
@@ -29,38 +37,73 @@ new copy but the elements are included by reference (i.e. they are not a copy).
 ## combn(o,n) -> iterator
 
 Produce all combinations of *n* elements from array *o*. It outputs an iterator which
-returns a new combination for every call, except for the last call which returns a null.
+returns a new combination for every call, except for the last call which returns a nil.
 
 Example:
 
-    for p in C.combn({'x','y','z'}, 2) do ... end
-   
+    for a,b in C.combn({'x','y','z'}, 2) do ... end
+    
+    -- or ...
+    
+    local f = C.combn({'x','y','z'}, 2)
+    while true do
+        local x = {f()}
+	if x == nil then break end
+	...
+    end
 
 ## combn_many(...) -> iterator
 
 Produces all of the combination of drawing one element for each list provided. It outputs
 an iterator which returns a new combination for every call, except for the last call which
-returns a null.
+returns a nil.
 
 Example:
 
-    for p in C.combn_many({'x','y','z'}, {1,2,3}) do ... end
-
+    for a,b in C.combn_many({'x','y','z'}, {1,2,3}) do ... end
+    
+    -- or
+    
+    local f = C.combn_many({'x','y','z'}, {1,2,3})
+    while true do
+        local x = {f()}
+	if x == nil then break end
+	...
+    end
 
 ## permute(o) -> iterator
 
 Produces all of the permutations of the elements in *o*. It outputs an iterator which
-returns a new combination for every call, except for the last call which returns a null.
+returns a new combination for every call, except for the last call which returns a nil.
 
 Example:
 
-    for p in C.permute({'x','y','z'}) do ... end
+    for a,b,c in C.permute({'x','y','z'}) do ... end
+    
+    -- or
+    
+    local f = C.permute({'x','y','z'})
+    while true do
+        local x = {f()}
+	if x == nil then break end
+	...
+    end
+
 
 ## powerset(o) -> iterator
 
 Produces all of the subsets of the elements in *o*. It outputs an iterator which
-returns a new combination for every call, except for the last call which returns a null.
+returns a new combination for every call, except for the last call which returns a nil.
 
 Example:
 
-    for p in C.powerset({'x','y','z'}) do ... end
+    for a,b,c in C.powerset({'x','y','z'}) do ... end
+    
+    -- or
+    
+    local f = C.powerset({'x','y','z'})
+    while true do
+        local x = {f()}
+	if x == nil then break end
+	...
+    end

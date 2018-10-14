@@ -22,33 +22,36 @@ local function flat(o)
    error("Expected a functional iterator or a table.")
 end
 
-local function icombn(tbl,i,n)
-   local l = table.getn(tbl)
+local function icombn(tbl,i,n,t,l)
+   t = t or {}
+   l = l or table.getn(tbl)
    if n == 1 then
-      local t,j = {},i
+      local j = i
       return function()
 	 if j > l then return nil end
+	 t[n] = tbl[j]
 	 j = j+1
-	 return {tbl[j-1]}
+	 return t[n]
       end
    end
    local j = i
-   local v = icombn(tbl,j+1,n-1)
+   local v = icombn(tbl,j+1,n-1,t)
    return function()
       if j > l then return nil end
       local x = v()
       if x == nil then
 	 j = j+1
-	 v = icombn(tbl,j+1,n-1)
+	 v = icombn(tbl,j+1,n-1,t)
 	 x = v()
       end
       if x == nil then return nil end
-      table.insert(x,tbl[j])
-      return x
+      t[n] = tbl[j]
+      return unpack(t)
    end
 end
 
-local function icombn_many(n, params)
+local function icombn_many(n,params,t)
+   t = t or {}
    if n < 1 then return nil end
    local o = params[n]
    local l = table.getn(o)
@@ -56,24 +59,25 @@ local function icombn_many(n, params)
       local i = 1
       return function()
 	 if i > l then return nil end
-	 i=i+1
-	 return {o[i-1]}
+	 t[n] = o[i]
+	 i = i+1
+	 return t[n]
       end
    end
    local i = 1
-   local v = icombn_many(n-1, params)
+   local v = icombn_many(n-1, params,t)
    return function()
       if i > l then return nil end
       local x = v()
       if x == nil then
 	 i = i+1
 	 if i > l or n < 0 then return nil end
-	 v = icombn_many(n-1,params)
+	 v = icombn_many(n-1,params,t)
 	 x = v()
       end
       if x == nil then return nil end
-      table.insert(x,o[i])
-      return x
+      t[n] = o[i]
+      return unpack(t)
    end
 end
 
@@ -82,10 +86,13 @@ local function factorial(n)
    return n * factorial(n-1)
 end
 
+local function combn_no(n,r)
+   return factorial(n)/(factorial(r)*factorial(n-r))
+end
+
 local function ipermute(n)
-   local i = factorial(n)
-   local j = 1
-   p = {}; for x=1,n do table.insert(p,x) end
+   local i,j,p = factorial(n),1,{}
+   for x=1,n do table.insert(p,x) end
    return function()
       if i <= 0 then return nil end; i = i-1
       p[j],p[j+1] = p[j+1],p[j]
@@ -100,48 +107,44 @@ function combine.combn(o,n)
    if n <= 0 or n > table.getn(tbl) then
       error("Need 0 < n <= tbl length.")
    end
-   return icombn(tbl,1,n)
+   return icombn(tbl,1,n,nil,nil)
 end
 
 function combine.combn_many(...)
    local params = {...}
-   if #params == 0 then
-      error("Need at least one array.")
-   end
-   for i=1,table.getn(params) do
-      params[i] = flat(params[i])
-   end
-   return icombn_many(table.getn(params), params)
+   local l = table.getn(params)
+   if l == 0 then error("Need at least one array.") end
+   for i=1,l do params[i] = flat(params[i]) end
+   return icombn_many(l,params,nil)
 end
 
 function combine.powerset(o)
    local tbl = flat(o)
-   local l = table.getn(tbl)
-   local i = 1
-   local v = icombn(tbl,1,i)
+   local l,i = table.getn(tbl),1
+   local n,v = combn_no(l,i), icombn(tbl,1,i)
    return function()
-      local x = v()
-      if x == nil then
-	 i = i + 1
+      n = n-1
+      if n < 0 then
+	 i = i+1
 	 if i > l then return nil end
+	 n = combn_no(l,i) - 1
 	 v = icombn(tbl,1,i)
-	 return v()
       end
-      return x
+      return v()
    end
 end
 
 function combine.permute(o)
    local tbl = flat(o)
-   local n = table.getn(tbl)
-   if n == 0 then return tbl end
-   local v = ipermute(n)
+   local l = table.getn(tbl)
+   if l == 0 then return tbl end
+   local v = ipermute(l)
+   local t = {}
    return function()
-      x = v()
+      local x = v()
       if x == nil then return nil end
-      local t = {}
-      for _,i in pairs(x) do table.insert(t,tbl[i]) end
-      return t
+      for i=1,#x do t[i] = tbl[x[i]] end
+      return unpack(t)
    end
 end
 
