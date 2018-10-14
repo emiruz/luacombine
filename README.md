@@ -48,8 +48,8 @@ Example:
     local f = C.combn({'x','y','z'}, 2)
     while true do
         local x = {f()}
-	if x == nil then break end
-	...
+        if x == nil then break end
+        ...
     end
 
 ## combn_many(...) -> iterator
@@ -67,8 +67,8 @@ Example:
     local f = C.combn_many({'x','y','z'}, {1,2,3})
     while true do
         local x = {f()}
-	if x == nil then break end
-	...
+        if x == nil then break end
+        ...
     end
 
 ## permute(o) -> iterator
@@ -85,8 +85,8 @@ Example:
     local f = C.permute({'x','y','z'})
     while true do
         local x = {f()}
-	if x == nil then break end
-	...
+        if x == nil then break end
+        ...
     end
 
 
@@ -104,6 +104,6 @@ Example:
     local f = C.powerset({'x','y','z'})
     while true do
         local x = {f()}
-	if x == nil then break end
-	...
+        if x == nil then break end
+        ...
     end
