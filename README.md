@@ -128,17 +128,22 @@ Run the performance tests:
 
 With vanilla Lua 5.1:
 
-    DESC: combn, array size #500, pick 3	4.740285s
-    DESC: combn_many,3 arrays #200	   3.596942s
-    DESC: powerset, array size #20	   5.3622s
-    DESC: permute, array size #10	   3.753631s
+    combn, array size #500, pick 3		4.740285s
+    combn_many,3 arrays #200	   		3.596942s
+    powerset, array size #20	   		5.3622s
+    permute, array size #10	   		3.753631s
 
 With LuaJIT:
 
-    DESC: combn, array size #500, pick 3	1.128s
-    DESC: combn_many,3 arrays #200	   0.846391s
-    DESC: powerset, array size #20	   3.077064s
-    DESC: permute, array size #10	   0.830082s
+    combn, array size #500, pick 3		1.128s
+    combn_many,3 arrays #200	   		0.846391s
+    powerset, array size #20	   		3.077064s
+    permute, array size #10	   		0.830082s
+
+NB: **combn({...},3)** with an array of size 500 would produce 20708500 combinations
+of length 3. powerset({...}) with an array of size 20 would produce 1048576
+permutations of length 20.
+
 
 # License
 
