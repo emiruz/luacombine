@@ -108,6 +108,38 @@ Example:
         ...
     end
 
+# Test suite
+
+There is a basic test suite at the moment which verifies that the number of items returned
+is as expected. To run it:
+
+    lua test.impl.lua
+
+
+# Performance
+
+Run the performance tests:
+
+    lua perf.impl.lua
+
+    or
+
+    luajit perf.impl.lua
+
+With vanilla Lua 5.1:
+
+    DESC: combn, array size #500, pick 3	4.740285s
+    DESC: combn_many,3 arrays #200	   3.596942s
+    DESC: powerset, array size #20	   5.3622s
+    DESC: permute, array size #10	   3.753631s
+
+With LuaJIT:
+
+    DESC: combn, array size #500, pick 3	1.128s
+    DESC: combn_many,3 arrays #200	   0.846391s
+    DESC: powerset, array size #20	   3.077064s
+    DESC: permute, array size #10	   0.830082s
+
 # License
 
 MIT Licensed, please see LICENSE file for more information.
