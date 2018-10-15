@@ -110,4 +110,4 @@ Example:
 
 # License
 
-MIT Licensed, do as you will with it.
+MIT Licensed, please see LICENSE file for more information.
