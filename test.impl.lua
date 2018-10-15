@@ -50,4 +50,3 @@ assert(count(C.permute({1,2,3,4,5})) == factorial(5))
 assert(count(C.permute({1,2,3})) == factorial(3))
 assert(count(C.permute({1,2,{3},4,{a=5,b='a'}})) == factorial(5))
 assert(count(C.permute({1})) == 1)
-

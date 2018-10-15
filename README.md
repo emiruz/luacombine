@@ -15,11 +15,7 @@ All functions operate on Lua arrays. E.g.
     {{'a'},{1,2},{a=4,b=9},7}
     etc...
 
-If a function receives an iterator or a table with an overloaded *__call* method, it'll first
-convert it to a standard table array, and then continue on. This is moreso for convenience
-since the library is quite useful alongside things like luafun or luaiter.
-
-All functions return an iterator which returns multiple results rather than returning tables.
+All functions return an iterator which returns multiple results (instead of tables).
 Iterators were used because they are more memory efficient and because they are well optimised
 for by LuaJIT. Multiple results are returned instead of tables because creating tables is an
 expensive operation in Lua. Returning multiple results allows the decision to create a table
@@ -34,9 +30,9 @@ to minimise object creation.
 
     C = require 'luacombine'
 
-## combn(o,n) -> iterator
+## combn(tbl,n) -> iterator
 
-Produce all combinations of *n* elements from array *o*. It outputs an iterator which
+Produce all combinations of *n* elements from array *tbl*. It outputs an iterator which
 returns a new combination for every call, except for the last call which returns a nil.
 
 Example:
@@ -71,9 +67,9 @@ Example:
         ...
     end
 
-## permute(o) -> iterator
+## permute(tbl) -> iterator
 
-Produces all of the permutations of the elements in *o*. It outputs an iterator which
+Produces all of the permutations of the elements in *tbl*. It outputs an iterator which
 returns a new combination for every call, except for the last call which returns a nil.
 
 Example:
@@ -90,9 +86,9 @@ Example:
     end
 
 
-## powerset(o) -> iterator
+## powerset(tbl) -> iterator
 
-Produces all of the subsets of the elements in *o*. It outputs an iterator which
+Produces all of the subsets of the elements in *tbl*. It outputs an iterator which
 returns a new combination for every call, except for the last call which returns a nil.
 
 Example:
