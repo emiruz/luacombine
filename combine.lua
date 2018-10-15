@@ -95,9 +95,11 @@ local function ipermute(n)
    for x=1,n do table.insert(p,x) end
    return function()
       if i <= 0 then return nil end; i = i-1
-      p[j],p[j+1] = p[j+1],p[j]
-      j = (j + 1) % n
-      if j == 0 then j = 1 end
+      if n ~= 1 then
+	 p[j],p[j+1] = p[j+1],p[j]
+	 j = (j + 1) % n
+	 if j == 0 then j = 1 end
+      end
       return p
    end
 end
