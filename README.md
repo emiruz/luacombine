@@ -145,7 +145,7 @@ With LuaJIT:
 | permute, array size #10 | 0.830082s |
 
 NB: **combn({...},3)** with an array of size 500 would produce 20708500 combinations
-of length 3. powerset({...}) with an array of size 20 would produce 1048576
+of length 3. **powerset({...})** with an array of size 20 would produce 1048576
 permutations of length 20.
 
 
