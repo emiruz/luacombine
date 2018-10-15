@@ -107,3 +107,7 @@ Example:
         if x == nil then break end
         ...
     end
+
+# License
+
+MIT Licensed, do as you will with it.
