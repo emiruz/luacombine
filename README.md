@@ -104,7 +104,7 @@ Example:
         ...
     end
 
-## shuffle(tbl) -> nil
+## shuffle(tbl) -> tbl
 
 Reshuffles the order of an array in a table using the Fisher-Yates algorithm. It does not
 set the random seed. So use *math.randomseed(<value>)* if you'd like to set it. Note that this
