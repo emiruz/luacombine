@@ -104,14 +104,16 @@ Example:
         ...
     end
 
-## shuffle(tbl) -> table
+## shuffle(tbl) -> nil
 
-Produces a random permutation of the table using the Fisher-Yates algorithm. It does not
-set the random seed. So use *math.randomseed(<value>)* if you'd like to set it.
+Reshuffles the order of an array in a table using the Fisher-Yates algorithm. It does not
+set the random seed. So use *math.randomseed(<value>)* if you'd like to set it. Note that this
+function mutates it's parameter.
 
 Example:
 
-    C.shuffle({'x','y','z'}
+    x = {'x','y','z'}
+    C.shuffle(x)
 
 
 # Test suite
