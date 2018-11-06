@@ -124,4 +124,14 @@ function combine.permute(tbl)
    end
 end
 
+function combine.shuffle(t)
+   local r = {}
+   for i = #t, 1, -1 do
+      local j = math.random(i)
+      t[i],t[j]=t[j],t[i]
+      table.insert(r,t[i])
+   end
+   return r
+end
+
 return combine

@@ -104,6 +104,16 @@ Example:
         ...
     end
 
+## shuffle(tbl) -> table
+
+Produces a random permutation of the table using the Fisher-Yates algorithm. It does not
+set the random seed. So use *math.randomseed(<value>)* if you'd like to set it.
+
+Example:
+
+    C.shuffle({'x','y','z'}
+
+
 # Test suite
 
 There is a basic test suite at the moment which verifies that the number of items returned
