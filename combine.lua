@@ -68,17 +68,22 @@ local function combn_no(n,r)
    return factorial(n)/(factorial(r)*factorial(n-r))
 end
 
-local function ipermute(n)
-   local i,j,p = factorial(n),1,{}
-   for x=1,n do table.insert(p,x) end
-   return function()
-      if i <= 0 then return nil end; i = i-1
-      if n ~= 1 then
-	 p[j],p[j+1] = p[j+1],p[j]
-	 j = (j + 1) % n
-	 if j == 0 then j = 1 end
+function ipermute(n)
+   local function gen(p,n)
+      if n == 0 then coroutine.yield(p)
+      else
+	 for i=1,n do
+	    p[n],p[i] = p[i],p[n]
+	    gen(p,n-1)
+	    p[n],p[i] = p[i],p[n]
+	 end
       end
-      return p
+   end
+   local p = {}; for x=1,n do table.insert(p,x) end
+   local c = coroutine.create(function() gen(p,n) end)
+   return function()
+      local _,r = coroutine.resume(c)
+      return r
    end
 end
 
